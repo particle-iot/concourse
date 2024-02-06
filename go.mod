@@ -1,6 +1,6 @@
 module github.com/concourse/concourse
 
-go 1.21.6
+go 1.21
 
 require (
 	code.cloudfoundry.org/clock v1.1.0

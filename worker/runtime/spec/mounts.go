@@ -48,6 +48,12 @@ var (
 			Source:      "cgroup",
 			Options:     []string{"ro", "nosuid", "noexec", "nodev"},
 		},
+		{
+			Destination: "/dev/bus/usb",
+			Type:        "bind",
+			Source:      "/dev/bus/usb",
+			Options:     []string{"bind"},
+		},
 	}
 )
 

@@ -296,11 +296,10 @@ func (b *GardenBackend) Create(gdnSpec garden.ContainerSpec) (garden.Container, 
 }
 
 func (b *GardenBackend) isHermetic(gdnSpec garden.ContainerSpec) bool {
-	if len(gdnSpec.NetOut) != 0 {
-		return false
-	}
-
-	return true
+	// Particle
+	// XXX: This thing is for some reason broken with our privileged tasks and leaves them without internet access
+	// XXX: Stub out for now
+	return false
 }
 
 func (b *GardenBackend) createContainer(ctx context.Context, gdnSpec garden.ContainerSpec) (containerd.Container, error) {

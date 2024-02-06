@@ -16,6 +16,18 @@ var (
 		Minor:    229,
 		FileMode: &worldReadWrite,
 	}
+	ttyAcmDevice  = specs.LinuxDevice{
+		Type:     "c",
+		Major:    166,
+		Minor:    -1,
+		FileMode: &worldReadWrite,
+	}
+	genericUsbDevice  = specs.LinuxDevice{
+		Type:     "c",
+		Major:    189,
+		Minor:    -1,
+		FileMode: &worldReadWrite,
+	}
 
 	// runc adds a list of devices by default.
 	// The rule below gets appended to that list.
@@ -28,8 +40,14 @@ var (
 	AnyContainerDevices = []specs.LinuxDeviceCgroup{
 		// This allows use of the FUSE filesystem
 		{Access: "rwm", Type: fuseDevice.Type, Major: intRef(fuseDevice.Major), Minor: intRef(fuseDevice.Minor), Allow: true}, // /dev/fuse
+		{Access: "rwm", Type: "c", Major: intRef(genericUsbDevice.Major), Minor: deviceWildCard(), Allow: true},
+		{Access: "rwm", Type: "c", Major: intRef(ttyAcmDevice.Major), Minor: deviceWildCard(), Allow: true},
 	}
 )
+
+func deviceWildCard() *int64 {
+	return intRef(-1)
+}
 
 func intRef(i int64) *int64 { return &i }
 
@@ -38,6 +56,6 @@ func Devices(privileged bool) []specs.LinuxDevice {
 		return nil
 	}
 	return []specs.LinuxDevice{
-		fuseDevice,
+		fuseDevice, ttyAcmDevice,
 	}
 }
